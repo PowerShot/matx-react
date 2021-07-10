@@ -15,7 +15,6 @@ const defaultOption = {
     trigger: "axis",
 
     axisPointer: {
-      type: "cross",
       lineStyle: {
         opacity: 0
       }
@@ -28,6 +27,7 @@ const defaultOption = {
     {
       areaStyle: {},
       smooth: true,
+      type: 'line',
       lineStyle: {
         width: 2,
         color: "#fff"
@@ -52,11 +52,10 @@ const defaultOption = {
   },
   yAxis: {
     type: "value",
-    min: 10,
-    max: 60,
+    min: 150,
     axisLabel: {
       color: "#ccc",
-      margin: 20,
+      margin: 0,
       fontSize: 13,
       fontFamily: "roboto",
     },

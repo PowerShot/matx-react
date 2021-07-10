@@ -2,7 +2,7 @@ import React from "react";
 import ReactEcharts from "echarts-for-react";
 import { withStyles } from "@material-ui/styles";
 
-const DoughnutChart = ({ height, color = [], theme }) => {
+const DoughnutChart = ({ my_netspace, pool_netspace, height, color = [], theme }) => {
   const option = {
     legend: {
       show: true,
@@ -43,7 +43,7 @@ const DoughnutChart = ({ height, color = [], theme }) => {
 
     series: [
       {
-        name: "Traffic Rate",
+        name: "Pool Capacity",
         type: "pie",
         radius: ["45%", "72.55%"],
         center: ["50%", "50%"],
@@ -78,14 +78,13 @@ const DoughnutChart = ({ height, color = [], theme }) => {
         },
         data: [
           {
-            value: 65,
-            name: "Google"
+            value: pool_netspace,
+            name: "Other members"
           },
           {
-            value: 20,
-            name: "Facebook"
-          },
-          { value: 15, name: "Others" }
+            value: my_netspace,
+            name: "You"
+          }
         ],
         itemStyle: {
           emphasis: {
@@ -97,7 +96,7 @@ const DoughnutChart = ({ height, color = [], theme }) => {
       }
     ]
   };
-
+  console.log(pool_netspace, my_netspace)
   return (
     <ReactEcharts
       style={{ height: height }}

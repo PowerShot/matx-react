@@ -45,7 +45,7 @@ const TableCard = () => {
   ];
 
   return (
-    <Card elevation={3} className="pt-20 mb-24">
+    <Card elevation={3} className="px-20 mb-24">
       <div className="card-title px-24 mb-12">top selling products</div>
       <div className="overflow-auto">
         <Table className="product-table">

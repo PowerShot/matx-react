@@ -50,14 +50,13 @@ class Layout1 extends Component {
     let { layout1Settings } = settings;
     let layoutClasses = {
       [classes.layout]: true,
-      [`${settings.activeLayout} sidenav-${layout1Settings.leftSidebar.mode} theme-${theme.palette.type} flex`]: true,
+      [`${settings.activeLayout} theme-${theme.palette.type} flex`]: true,
       "topbar-fixed": layout1Settings.topbar.fixed
     };
     return (
       <AppContext.Consumer>
         {({ routes }) => (
           <div className={classList(layoutClasses)}>
-            {layout1Settings.leftSidebar.show && <Layout1Sidenav />}
 
             <div className="content-wrap position-relative">
               {layout1Settings.topbar.show && layout1Settings.topbar.fixed && (
