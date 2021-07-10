@@ -1,70 +1,56 @@
-import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import AppContext from "app/appContext";
+import React, {
+    // useContext,
+    useEffect,
+    useState,
+} from 'react'
+import { Redirect, useLocation } from 'react-router-dom'
+// import AppContext from "app/appContext";
+import useAuth from 'app/hooks/useAuth'
 
-class AuthGuard extends Component {
-  constructor(props, context) {
-    super(props);
-    let { routes } = context;
+// const getUserRoleAuthStatus = (pathname, user, routes) => {
+//   const matched = routes.find((r) => r.path === pathname);
 
-    this.state = {
-      authenticated: false,
-      routes
-    };
-  }
+//   const authenticated =
+//     matched && matched.auth && matched.auth.length
+//       ? matched.auth.includes(user.role)
+//       : true;
+//   console.log(matched, user);
+//   return authenticated;
+// };
 
-  componentDidMount() {
-    if (!this.state.authenticated) {
-      this.redirectRoute(this.props);
+const AuthGuard = ({ children }) => {
+    const {
+        isAuthenticated,
+        // user
+    } = useAuth()
+
+    const [previouseRoute, setPreviousRoute] = useState(null)
+    const { pathname } = useLocation()
+
+    // const { routes } = useContext(AppContext);
+    // const isUserRoleAuthenticated = getUserRoleAuthStatus(pathname, user, routes);
+    // let authenticated = isAuthenticated && isUserRoleAuthenticated;
+
+    // IF YOU NEED ROLE BASED AUTHENTICATION,
+    // UNCOMMENT ABOVE TWO LINES, getUserRoleAuthStatus METHOD AND user VARIABLE
+    // AND COMMENT OUT BELOW LINE
+    let authenticated = isAuthenticated
+
+    useEffect(() => {
+        if (previouseRoute !== null) setPreviousRoute(pathname)
+    }, [pathname, previouseRoute])
+
+    if (authenticated) return <>{children}</>
+    else {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/session/signin',
+                    state: { redirectUrl: previouseRoute },
+                }}
+            />
+        )
     }
-  }
-
-  componentDidUpdate() {
-    if (!this.state.authenticated) {
-      this.redirectRoute(this.props);
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.authenticated !== this.state.authenticated;
-  }
-
-  static getDerivedStateFromProps(props, state) {    
-    const { location, user } = props;
-    const { pathname } = location;
-    const matched = state.routes.find(r => r.path === pathname);
-    const authenticated =
-      matched && matched.auth && matched.auth.length
-        ? matched.auth.includes(user.role)
-        : true;
-
-    return {
-      authenticated
-    };
-  }
-
-  redirectRoute(props) {
-    const { location, history } = props;
-    const { pathname } = location;
-
-    history.push({
-      pathname: "/session/signin",
-      state: { redirectUrl: pathname }
-    });
-  }
-
-  render() {
-    let { children } = this.props;
-    const { authenticated } = this.state;
-    return authenticated ? <Fragment>{children}</Fragment> : null;
-  }
 }
 
-AuthGuard.contextType = AppContext;
-
-const mapStateToProps = state => ({
-  user: state.user
-});
-
-export default withRouter(connect(mapStateToProps)(AuthGuard));
+export default AuthGuard

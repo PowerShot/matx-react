@@ -1,14 +1,10 @@
-import {MatxLoadable} from "matx";
-
-const AppDragAndDrop = MatxLoadable({
-  loader: () => import("./AppDragAndDrop")
-});
+import React from 'react'
 
 const dragAndDropRoute = [
-  {
-    path: "/others/drag-and-drop",
-    component: AppDragAndDrop
-  }
-];
+    {
+        path: '/others/drag-and-drop',
+        component: React.lazy(() => import('./AppDragAndDrop')),
+    },
+]
 
-export default dragAndDropRoute;
+export default dragAndDropRoute
